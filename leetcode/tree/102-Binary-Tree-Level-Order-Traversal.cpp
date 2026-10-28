@@ -15,22 +15,37 @@ public:
     queue<TreeNode*> q; 
     vector<vector<int>> res;
 
-    void solve(TreeNode* root,int depth){
-        if(root == NULL) return;
-       if(res.size() == depth){
+    void solve(TreeNode* root){
+       if(!root)    return;
+       q.push(root);
+       int depth = 0;
+       int level = 1;
+       while(!q.empty()){
         res.push_back(vector<int>());
+        level = q.size();
+        
+        for(int i=0; i < level; i++){
+            if(q.front()->left){
+                q.push(q.front()->left);
+                
+            }
+            
+            if(q.front()->right){
+                q.push(q.front()->right);
+        
+            }
+            res[depth].push_back(q.front()->val);
+            q.pop();
+            
+        }
+        depth++;
+
        }
-       res[depth].push_back(root->val);
-       solve(root->left,depth+1);
-       solve(root->right,depth+1);
-       
-
-
 
     }
     vector<vector<int>> levelOrder(TreeNode* root) {
        
-        solve(root,0);
+        solve(root);
         return res;
     }
 };
